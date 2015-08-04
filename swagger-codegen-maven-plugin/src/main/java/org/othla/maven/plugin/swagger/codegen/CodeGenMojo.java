@@ -1,7 +1,9 @@
-package org.othla.maven.plugin.swagger;
+package org.othla.maven.plugin.swagger.codegen;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -10,6 +12,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.othla.maven.plugin.swagger.model.ResourceEntry;
+import org.zalando.stups.swagger.codegen.StandaloneCodegenerator;
 
 @Mojo(name = "codegen", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresProject = true, threadSafe = true, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class CodeGenMojo extends AbstractCodeGenMojo
@@ -115,8 +118,23 @@ public class CodeGenMojo extends AbstractCodeGenMojo
    }
 
    public void execute() throws MojoExecutionException, MojoFailureException {
-      // TODO Auto-generated method stub
+      cleanPackageDirectory(this.generateDirectory);
 
+      StandaloneCodegenerator generator = StandaloneCodegenerator.builder()
+            .forLanguage(this.language)
+            .writeResultsTo(this.generateDirectory)
+            .withApiPackage(this.apiPackage)
+            .withModelPackage(this.modelPackage)
+            .withLogger(new MojoCodegeneratorLogger(getLog()))
+            .skipModelgeneration(this.skipModelgeneration)
+            .skipApigeneration(this.skipApigeneration)
+            .withModelsExcluded(this.excludedModels)
+            .build();
    }
 
+   public Set<String> generateApiFilePaths(ResourceEntry resouceEntry) {
+      Set<String> apiFilePathSet = new LinkedHashSet<String>();
+      
+      return apiFilePathSet;
+   }
 }

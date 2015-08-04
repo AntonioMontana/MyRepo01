@@ -1,5 +1,7 @@
-package org.othla.maven.plugin.swagger;
+package org.othla.maven.plugin.swagger.codegen;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.List;
 
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -105,6 +107,21 @@ public abstract class AbstractCodeGenMojo extends AbstractMojo
 
    public void setPluginArtifacts(List<org.apache.maven.artifact.Artifact> pluginArtifacts) {
       this.pluginArtifacts = pluginArtifacts;
+   }
+   
+   protected void cleanPackageDirectory(final File packageDirectory) {
+      final File[] files = packageDirectory.listFiles(new FileFilter() {
+         // @Override
+         public boolean accept(File file) {
+            return file.isFile();
+         }
+      });
+      
+      if (files != null) {
+         for (File file : files) {
+            file.delete();
+         }
+      }
    }
 
 }
