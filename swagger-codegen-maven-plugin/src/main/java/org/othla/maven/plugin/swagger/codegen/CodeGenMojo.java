@@ -11,7 +11,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.othla.maven.plugin.swagger.model.ResourceEntry;
+import org.othla.maven.plugin.swagger.codegen.model.ResourceEntry;
 import org.zalando.stups.swagger.codegen.StandaloneCodegenerator;
 
 @Mojo(name = "codegen", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresProject = true, threadSafe = true, requiresDependencyResolution = ResolutionScope.COMPILE)

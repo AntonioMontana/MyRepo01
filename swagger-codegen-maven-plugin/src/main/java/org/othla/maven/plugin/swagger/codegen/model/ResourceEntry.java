@@ -1,4 +1,4 @@
-package org.othla.maven.plugin.swagger.model;
+package org.othla.maven.plugin.swagger.codegen.model;
 
 import java.net.URL;
 
