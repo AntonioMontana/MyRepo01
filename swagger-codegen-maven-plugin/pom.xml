@@ -7,7 +7,7 @@
 	<packaging>maven-plugin</packaging>
 
 	<properties>
-		<maven.version>3.2.1</maven.version>
+		<maven.version>3.3.1</maven.version>
 		<maven.archiver.version>2.5</maven.archiver.version>
 		<maven.plugin.annotation.version>3.2</maven.plugin.annotation.version>
 		<main.basedir>${basedir}/..</main.basedir>

@@ -12,7 +12,9 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.othla.maven.plugin.swagger.codegen.model.ResourceEntry;
+import org.zalando.stups.swagger.codegen.CodegenerationException;
 import org.zalando.stups.swagger.codegen.StandaloneCodegenerator;
+import org.zalando.stups.swagger.codegen.StandaloneCodegenerator.CodegeneratorBuilder;
 
 @Mojo(name = "codegen", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresProject = true, threadSafe = true, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class CodeGenMojo extends AbstractCodeGenMojo
@@ -120,7 +122,7 @@ public class CodeGenMojo extends AbstractCodeGenMojo
    public void execute() throws MojoExecutionException, MojoFailureException {
       cleanPackageDirectory(this.generateDirectory);
 
-      StandaloneCodegenerator generator = StandaloneCodegenerator.builder()
+      CodegeneratorBuilder builder = StandaloneCodegenerator.builder()
             .forLanguage(this.language)
             .writeResultsTo(this.generateDirectory)
             .withApiPackage(this.apiPackage)
@@ -128,13 +130,22 @@ public class CodeGenMojo extends AbstractCodeGenMojo
             .withLogger(new MojoCodegeneratorLogger(getLog()))
             .skipModelgeneration(this.skipModelgeneration)
             .skipApigeneration(this.skipApigeneration)
-            .withModelsExcluded(this.excludedModels)
-            .build();
+            .withModelsExcluded(this.excludedModels);
+      
+        for (File apiFile : generateApiFilePaths(this.inputSpec)) {
+            StandaloneCodegenerator generator = builder.withApiFile(apiFile).build();
+
+            try {
+                generator.generate();
+            } catch (CodegenerationException e) {
+                getLog().error("Code generation error!!!", e);
+            }
+        }
    }
 
-   public Set<String> generateApiFilePaths(ResourceEntry resouceEntry) {
-      Set<String> apiFilePathSet = new LinkedHashSet<String>();
+   public Set<File> generateApiFilePaths(ResourceEntry resouceEntry) {
+      Set<File> apiFileSet = new LinkedHashSet<File>();
       
-      return apiFilePathSet;
+      return apiFileSet;
    }
 }
