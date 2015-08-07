@@ -29,7 +29,13 @@
 							<goal>codegen</goal>
 						</goals>
 						<configuration>
-						
+							<!-- Specify where this pom will output files -->
+							<outputDirectory>target/test-harness/project-to-test</outputDirectory>
+
+							<localRepository>${localRepository}</localRepository>
+							<!-- The defined stubs -->
+							<project implementation="org.othla.maven.plugin.swagger.codegen.stub.CodegenMojoStub" />
+							<settings implementation="org.othla.maven.plugin.swagger.codegen.stub.SettingsStub" />
 						</configuration>
 					</execution>
 				</executions>
